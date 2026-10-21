@@ -1,11 +1,11 @@
 import pytest
-from lux.priv.python.hyperliquid_utils import risk_management
+from hyperliquid_utils import risk_management
 
 def test_liquidation_risk_critical():
     position_data = {
         "status": "success",
         "data": [{
-            "marginSummary": {"accountValue": "1000"}
+            "marginSummary": {"accountValue": "50"}
         }],
         "metadata": {"total_value": 10000}
     }

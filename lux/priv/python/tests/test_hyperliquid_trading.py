@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
-from lux.priv.python.hyperliquid_utils import trading
+from hyperliquid_utils import trading
 
 def test_place_order_success():
     mock_exchange = MagicMock()
@@ -24,8 +24,7 @@ def test_get_positions_success():
     mock_info = MagicMock()
     mock_info.user_state.return_value = {
         "positions": [{
-            "position": {"szi": "0.5", "dir": "LONG"},
-            "entryPx": "2400",
+            "position": {"szi": "0.5", "dir": "LONG", "entryPx": "2400"},
             "markPx": "2500",
             "marginSummary": {"accountValue": "5000"}
         }]
@@ -41,10 +40,12 @@ def test_set_leverage_valid():
     mock_exchange = MagicMock()
     mock_exchange.update_leverage.return_value = {"status": "ok"}
     
-    result = trading.set_leverage(mock_exchange, 10)
+    result = trading.set_leverage(mock_exchange, 10, "BTC")
     
     assert result["status"] == "success"
     assert result["metadata"]["leverage"] == 10
+    assert result["metadata"]["symbol"] == "BTC"
+    mock_exchange.update_leverage.assert_called_once_with(10, "BTC")
 
 def test_set_leverage_invalid():
     mock_exchange = MagicMock()
