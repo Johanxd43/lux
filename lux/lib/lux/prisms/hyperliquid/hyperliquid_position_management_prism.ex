@@ -106,7 +106,9 @@ defmodule Lux.Prisms.Hyperliquid.HyperliquidPositionManagementPrism do
           {"low", []}
       end
 
-    Logger.info("Position management assessment: risk_level=#{risk_level}, margin_ratio=#{margin_ratio}")
+    Logger.info(
+      "Position management assessment: risk_level=#{risk_level}, margin_ratio=#{margin_ratio}"
+    )
 
     {:ok,
      %{
@@ -122,11 +124,13 @@ defmodule Lux.Prisms.Hyperliquid.HyperliquidPositionManagementPrism do
   defp to_f(nil), do: 0.0
   defp to_f(val) when is_float(val), do: val
   defp to_f(val) when is_integer(val), do: val * 1.0
+
   defp to_f(val) when is_binary(val) do
     case Float.parse(val) do
       {num, _} -> num
       :error -> 0.0
     end
   end
+
   defp to_f(_), do: 0.0
 end

@@ -85,11 +85,13 @@ defmodule Lux.Lenses.Hyperliquid.FundingHistoryLens do
   defp parse_float(nil), do: 0.0
   defp parse_float(val) when is_float(val), do: val
   defp parse_float(val) when is_integer(val), do: val * 1.0
+
   defp parse_float(val) when is_binary(val) do
     case Float.parse(val) do
       {num, _} -> num
       :error -> 0.0
     end
   end
+
   defp parse_float(_), do: 0.0
 end

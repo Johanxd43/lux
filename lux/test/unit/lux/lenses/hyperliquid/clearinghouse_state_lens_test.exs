@@ -71,7 +71,8 @@ defmodule Lux.Lenses.Hyperliquid.ClearinghouseStateLensTest do
     end
 
     test "handles API errors gracefully" do
-      assert {:error, "User not found"} = ClearinghouseStateLens.after_focus(%{"error" => "User not found"})
+      assert {:error, "User not found"} =
+               ClearinghouseStateLens.after_focus(%{"error" => "User not found"})
     end
   end
 end

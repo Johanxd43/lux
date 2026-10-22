@@ -41,11 +41,14 @@ defmodule Lux.Lenses.Hyperliquid.ClearinghouseStateLens do
   Transforms the clearinghouse state into a structured account model.
   """
   @impl true
-  def after_focus(%{"crossMarginSummary" => summary, "assetPositions" => asset_positions} = response) do
+  def after_focus(
+        %{"crossMarginSummary" => summary, "assetPositions" => asset_positions} = response
+      ) do
     positions =
       asset_positions
       |> Enum.map(fn item ->
         pos = item["position"] || item
+
         %{
           coin: pos["coin"],
           size: parse_float(pos["szi"] || pos["size"]),
@@ -84,11 +87,13 @@ defmodule Lux.Lenses.Hyperliquid.ClearinghouseStateLens do
   defp parse_float(nil), do: 0.0
   defp parse_float(val) when is_float(val), do: val
   defp parse_float(val) when is_integer(val), do: val * 1.0
+
   defp parse_float(val) when is_binary(val) do
     case Float.parse(val) do
       {num, _} -> num
       :error -> 0.0
     end
   end
+
   defp parse_float(_), do: 0.0
 end

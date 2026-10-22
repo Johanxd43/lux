@@ -76,7 +76,8 @@ defmodule Lux.Lenses.Hyperliquid.MarketMetadataLensTest do
     end
 
     test "handles error response" do
-      assert {:error, "API rate limit"} = MarketMetadataLens.after_focus(%{"error" => "API rate limit"})
+      assert {:error, "API rate limit"} =
+               MarketMetadataLens.after_focus(%{"error" => "API rate limit"})
     end
 
     test "handles malformed response gracefully" do

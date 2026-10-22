@@ -30,14 +30,18 @@ defmodule Lux.Lenses.Hyperliquid.MarketMetadataLens do
     }
 
   def before_focus(params) do
-    %{"type" => "metaAndAssetCtxs", "requested_coin" => Map.get(params, :coin) || Map.get(params, "coin")}
+    %{
+      "type" => "metaAndAssetCtxs",
+      "requested_coin" => Map.get(params, :coin) || Map.get(params, "coin")
+    }
   end
 
   @doc """
   Transforms the Hyperliquid metaAndAssetCtxs API response into structured market models.
   """
   @impl true
-  def after_focus([%{"universe" => universe}, asset_ctxs] = _response) when is_list(universe) and is_list(asset_ctxs) do
+  def after_focus([%{"universe" => universe}, asset_ctxs] = _response)
+      when is_list(universe) and is_list(asset_ctxs) do
     markets =
       universe
       |> Enum.zip(asset_ctxs)
@@ -73,11 +77,13 @@ defmodule Lux.Lenses.Hyperliquid.MarketMetadataLens do
   defp parse_float(nil), do: 0.0
   defp parse_float(val) when is_float(val), do: val
   defp parse_float(val) when is_integer(val), do: val * 1.0
+
   defp parse_float(val) when is_binary(val) do
     case Float.parse(val) do
       {num, _} -> num
       :error -> 0.0
     end
   end
+
   defp parse_float(_), do: 0.0
 end

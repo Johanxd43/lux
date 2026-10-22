@@ -8,13 +8,13 @@ defmodule Lux.Lenses.Hyperliquid.FundingHistoryLensTest do
       "coin" => "BTC",
       "fundingRate" => "0.0000125",
       "premium" => "0.0001",
-      "time" => 1700000000000
+      "time" => 1_700_000_000_000
     },
     %{
       "coin" => "BTC",
       "fundingRate" => "0.0000130",
       "premium" => "0.00015",
-      "time" => 1700003600000
+      "time" => 1_700_003_600_000
     }
   ]
 
@@ -29,16 +29,22 @@ defmodule Lux.Lenses.Hyperliquid.FundingHistoryLensTest do
 
   describe "before_focus/1" do
     test "constructs fundingHistory query payload" do
-      payload = FundingHistoryLens.before_focus(%{coin: "BTC", start_time: 1700000000000})
+      payload = FundingHistoryLens.before_focus(%{coin: "BTC", start_time: 1_700_000_000_000})
       assert payload["type"] == "fundingHistory"
       assert payload["coin"] == "BTC"
-      assert payload["startTime"] == 1700000000000
+      assert payload["startTime"] == 1_700_000_000_000
       refute Map.has_key?(payload, "endTime")
     end
 
     test "includes endTime when provided" do
-      payload = FundingHistoryLens.before_focus(%{coin: "BTC", start_time: 1700000000000, end_time: 1700007200000})
-      assert payload["endTime"] == 1700007200000
+      payload =
+        FundingHistoryLens.before_focus(%{
+          coin: "BTC",
+          start_time: 1_700_000_000_000,
+          end_time: 1_700_007_200_000
+        })
+
+      assert payload["endTime"] == 1_700_007_200_000
     end
   end
 
@@ -52,13 +58,14 @@ defmodule Lux.Lenses.Hyperliquid.FundingHistoryLensTest do
       assert first.coin == "BTC"
       assert first.funding_rate == 0.0000125
       assert first.premium == 0.0001
-      assert first.time == 1700000000000
+      assert first.time == 1_700_000_000_000
 
       assert second.funding_rate == 0.0000130
     end
 
     test "handles error response" do
-      assert {:error, "Invalid coin"} = FundingHistoryLens.after_focus(%{"error" => "Invalid coin"})
+      assert {:error, "Invalid coin"} =
+               FundingHistoryLens.after_focus(%{"error" => "Invalid coin"})
     end
   end
 end

@@ -62,7 +62,8 @@ defmodule Lux.Prisms.Hyperliquid.HyperliquidUpdateLeveragePrism do
          {:ok, api_url} <- {:ok, Config.hyperliquid_api_url()},
          {:ok, %{"success" => true}} <- Lux.Python.import_package("hyperliquid.exchange"),
          {:ok, %{"success" => true}} <- Lux.Python.import_package("hyperliquid_utils.setup"),
-         {:ok, result} <- execute_update_leverage(private_key, address, api_url, coin, leverage, is_cross) do
+         {:ok, result} <-
+           execute_update_leverage(private_key, address, api_url, coin, leverage, is_cross) do
       {:ok, %{status: "success", coin: coin, leverage: leverage, result: result}}
     else
       {:error, :missing_private_key} ->
